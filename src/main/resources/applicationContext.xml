@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:musicPlayer.properties"/>
+
+    <bean id="MusicBeanClassical"
+          class="ru.simukov.springCourse.ClassicalMusic" scope="singleton"
+          init-method="doMyInit"
+          destroy-method="doMyDestroy"
+          factory-method="getClassicalMusic">
+    </bean>
+
+    <bean id="MusicBeanRock"
+          class="ru.simukov.springCourse.RockMusic">
+    </bean>
+
+    <bean id="MusicBeanIndy"
+          class="ru.simukov.springCourse.IndyMusic">
+    </bean>
+
+    <bean id="musicPlayer"
+          class="ru.simukov.springCourse.MusicPlayer">
+        <property name="Music" ref="MusicBeanClassical"/>
+        <property name="Name" value="${musicPlayer.name}" />
+        <property name="Volume" value="${musicPlayer.volume}" />
+    </bean>
+
+    <bean id="MusicBeanList" class="ru.simukov.springCourse.MusicPlayer" scope="prototype">
+        <property name="MusicList">
+            <list>
+                <ref bean="MusicBeanClassical"/>
+                <ref bean="MusicBeanIndy" />
+                <ref bean="MusicBeanRock" />
+            </list>
+        </property>
+    </bean>
+</beans>
